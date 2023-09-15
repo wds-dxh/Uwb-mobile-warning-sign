@@ -7,7 +7,7 @@
 
 
 #define    ABS(x)    ((x) > 0 ? (x) : -(x)) 
-#define LED_BUILTIN 18
+// #define LED_BUILTIN 
 typedef enum {
   S_VER   = 0,      /* 读取固件版本和对应的硬件版本 */
   S_RL    = 1,      /* 读取读取相电阻和相电感 */
@@ -28,9 +28,7 @@ typedef enum {
 
 class  motor{
 public:
-    /**********************************************************
-    *** 注意：每个函数的参数的具体说明，请查阅下方的函数的注释说明
-    **********************************************************/
+
     void Emm_V5_Reset_CurPos_To_Zero(uint8_t addr); // 将当前位置清零
     void Emm_V5_Reset_Clog_Pro(uint8_t addr); // 解除堵转保护
     void Emm_V5_Read_Sys_Params(uint8_t addr, SysParams_t s); // 读取参数
@@ -46,11 +44,6 @@ public:
     void Emm_V5_Origin_Interrupt(uint8_t addr); // 强制中断并退出回零
     void Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount); // 返回数据接收函数
     
-
-  
-    
-
-
 
   //速度控制命令
 

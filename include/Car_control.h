@@ -1,8 +1,14 @@
 #ifndef _CAR_CONTROL_H_
 #define _CAR_CONTROL_H_
 
+
+
 #include <Arduino.h>
 #include <motor.h>
+
+
+ 
+#define DELAY_TIME 10  //电机控制延时时间
 
 
 //小车控制类
@@ -23,5 +29,6 @@ public:
 
 
 };
+
 
 #endif

@@ -8,9 +8,12 @@
 #include "motor.h"
 #include "Arduino.h"
 
-motor motor1;
 
-#define DELAY_TIME 2
+
+
+
+
+motor motor1;
 
 
 /**
@@ -36,13 +39,6 @@ void Car_control :: Car_control_init(){
 
 
 
-
-/**
-  * @brief    小车前进
-  * @param    vel ：速度       ，范围0 - 5000RPM
-  * @param    acc ：加速度     ，范围0 - 255，注意：0是直接启动
-  * @retval   条件不满足返回 地址 FF E2 6B，错误命令返回 地址 00 EE 6B
-  */
 void Car_control :: Car_forward(uint16_t vel, uint8_t acc){
 
     motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
