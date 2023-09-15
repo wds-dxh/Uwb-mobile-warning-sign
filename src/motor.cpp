@@ -3,9 +3,8 @@
 
 // 注意：串口和USB下载口共用串口（0,1），USB上传程序时，先拔掉串口线.
 
-#define    ABS(x)    ((x) > 0 ? (x) : -(x)) 
-
-#define LED_BUILTIN 2
+// #define    ABS(x)    ((x) > 0 ? (x) : -(x)) 
+// #define LED_BUILTIN 18
 
 // typedef enum {
 //   S_VER   = 0,      /* 读取固件版本和对应的硬件版本 */
@@ -42,6 +41,9 @@
 // void Emm_V5_Origin_Interrupt(uint8_t addr); // 强制中断并退出回零
 // void Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount); // 返回数据接收函数
 
+/*
+
+
 void setup() {
   // put your setup code here, to run once:
 
@@ -49,11 +51,11 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   // 初始化串口
-  Serial.begin(115200);
+  Serial2.begin(115200);
 
   // 等待串口初始化完成
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
+  while (!Serial2) {
+    ; // wait for Serial2 port to connect. Needed for native USB port only
   }
 
   // 上电延时2秒等待Emm_V5.0闭环初始化完毕
@@ -76,18 +78,20 @@ void loop() {
   if(rxCmd[rxCount - 1] == 0x6B) { digitalWrite(LED_BUILTIN, HIGH); } else { digitalWrite(LED_BUILTIN, LOW); }
 
   // 调试使用，打印Emm_V5.0闭环返回的数据到串口
-  // for(int i = 0; i < rxCount; i++) { Serial.write(rxCmd[i] + 1); } // 因为和USB下载口共用串口，所以让每个数据加1再发送出来，防止和电机地址冲突
+  // for(int i = 0; i < rxCount; i++) { Serial2.write(rxCmd[i] + 1); } // 因为和USB下载口共用串口，所以让每个数据加1再发送出来，防止和电机地址冲突
 
   // 停止发送命令
-  while(1);
+  // while(1);
 }
+
+*/
 
 /**
   * @brief    将当前位置清零
   * @param    addr  ：电机地址
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Reset_CurPos_To_Zero(uint8_t addr)
+void motor :: Emm_V5_Reset_CurPos_To_Zero(uint8_t addr)
 {
   uint8_t cmd[16] = {0};
   
@@ -98,7 +102,7 @@ void Emm_V5_Reset_CurPos_To_Zero(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 4);
+  Serial2.write(cmd, 4);
 }
 
 /**
@@ -106,7 +110,7 @@ void Emm_V5_Reset_CurPos_To_Zero(uint8_t addr)
   * @param    addr  ：电机地址
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Reset_Clog_Pro(uint8_t addr)
+void motor :: Emm_V5_Reset_Clog_Pro(uint8_t addr)
 {
   uint8_t cmd[16] = {0};
   
@@ -117,7 +121,7 @@ void Emm_V5_Reset_Clog_Pro(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 4);
+  Serial2.write(cmd, 4);
 }
 
 /**
@@ -126,7 +130,7 @@ void Emm_V5_Reset_Clog_Pro(uint8_t addr)
   * @param    s     ：系统参数类型
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Read_Sys_Params(uint8_t addr, SysParams_t s)
+void motor::Emm_V5_Read_Sys_Params(uint8_t addr, SysParams_t s)
 {
   uint8_t i = 0;
   uint8_t cmd[16] = {0};
@@ -156,7 +160,7 @@ void Emm_V5_Read_Sys_Params(uint8_t addr, SysParams_t s)
   cmd[i] = 0x6B; ++i;                   // 校验字节
   
   // 发送命令
-  Serial.write(cmd, i);
+  Serial2.write(cmd, i);
 }
 
 /**
@@ -166,7 +170,7 @@ void Emm_V5_Read_Sys_Params(uint8_t addr, SysParams_t s)
   * @param    ctrl_mode：控制模式（对应屏幕上的P_Pul菜单），0是关闭脉冲输入引脚，1是开环模式，2是闭环模式，3是让En端口复用为多圈限位开关输入引脚，Dir端口复用为到位输出高电平功能
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Modify_Ctrl_Mode(uint8_t addr, bool svF, uint8_t ctrl_mode)
+void motor :: Emm_V5_Modify_Ctrl_Mode(uint8_t addr, bool svF, uint8_t ctrl_mode)
 {
   uint8_t cmd[16] = {0};
   
@@ -179,7 +183,7 @@ void Emm_V5_Modify_Ctrl_Mode(uint8_t addr, bool svF, uint8_t ctrl_mode)
   cmd[5] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 6);
+  Serial2.write(cmd, 6);
 }
 
 /**
@@ -189,7 +193,7 @@ void Emm_V5_Modify_Ctrl_Mode(uint8_t addr, bool svF, uint8_t ctrl_mode)
   * @param    snF   ：多机同步标志 ，false为不启用，true为启用
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_En_Control(uint8_t addr, bool state, bool snF)
+void motor :: Emm_V5_En_Control(uint8_t addr, bool state, bool snF)
 {
   uint8_t cmd[16] = {0};
   
@@ -202,7 +206,7 @@ void Emm_V5_En_Control(uint8_t addr, bool state, bool snF)
   cmd[5] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 6);
+  Serial2.write(cmd, 6);
 }
 
 /**
@@ -214,7 +218,7 @@ void Emm_V5_En_Control(uint8_t addr, bool state, bool snF)
   * @param    snF ：多机同步标志，false为不启用，true为启用
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Vel_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, bool snF)
+void motor :: Emm_V5_Vel_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, bool snF)
 {
   uint8_t cmd[16] = {0};
 
@@ -229,7 +233,7 @@ void Emm_V5_Vel_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, bo
   cmd[7] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 8);
+  Serial2.write(cmd, 8);
 }
 
 /**
@@ -243,7 +247,7 @@ void Emm_V5_Vel_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, bo
   * @param    snF ：多机同步标志 ，false为不启用，true为启用
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Pos_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, uint32_t clk, bool raF, bool snF)
+void motor :: Emm_V5_Pos_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, uint32_t clk, bool raF, bool snF)
 {
   uint8_t cmd[16] = {0};
 
@@ -263,7 +267,7 @@ void Emm_V5_Pos_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, ui
   cmd[12] =  0x6B;                      // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 13);
+  Serial2.write(cmd, 13);
 }
 
 /**
@@ -272,7 +276,7 @@ void Emm_V5_Pos_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, ui
   * @param    snF   ：多机同步标志，false为不启用，true为启用
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Stop_Now(uint8_t addr, bool snF)
+void motor :: Emm_V5_Stop_Now(uint8_t addr, bool snF)
 {
   uint8_t cmd[16] = {0};
   
@@ -284,7 +288,7 @@ void Emm_V5_Stop_Now(uint8_t addr, bool snF)
   cmd[4] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 5);
+  Serial2.write(cmd, 5);
 }
 
 /**
@@ -292,7 +296,7 @@ void Emm_V5_Stop_Now(uint8_t addr, bool snF)
   * @param    addr  ：电机地址
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Synchronous_motion(uint8_t addr)
+void motor :: Emm_V5_Synchronous_motion(uint8_t addr)
 {
   uint8_t cmd[16] = {0};
   
@@ -303,7 +307,7 @@ void Emm_V5_Synchronous_motion(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 4);
+  Serial2.write(cmd, 4);
 }
 
 /**
@@ -312,7 +316,7 @@ void Emm_V5_Synchronous_motion(uint8_t addr)
   * @param    svF   ：是否存储标志，false为不存储，true为存储
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Origin_Set_O(uint8_t addr, bool svF)
+void motor :: Emm_V5_Origin_Set_O(uint8_t addr, bool svF)
 {
   uint8_t cmd[16] = {0};
   
@@ -324,7 +328,7 @@ void Emm_V5_Origin_Set_O(uint8_t addr, bool svF)
   cmd[4] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 5);
+  Serial2.write(cmd, 5);
 }
 
 /**
@@ -341,7 +345,7 @@ void Emm_V5_Origin_Set_O(uint8_t addr, bool svF)
   * @param    potF   ：上电自动触发回零，false为不使能，true为使能
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Origin_Modify_Params(uint8_t addr, bool svF, uint8_t o_mode, uint8_t o_dir, uint16_t o_vel, uint32_t o_tm, uint16_t sl_vel, uint16_t sl_ma, uint16_t sl_ms, bool potF)
+void motor :: Emm_V5_Origin_Modify_Params(uint8_t addr, bool svF, uint8_t o_mode, uint8_t o_dir, uint16_t o_vel, uint32_t o_tm, uint16_t sl_vel, uint16_t sl_ma, uint16_t sl_ms, bool potF)
 {
   uint8_t cmd[32] = {0};
   
@@ -368,7 +372,7 @@ void Emm_V5_Origin_Modify_Params(uint8_t addr, bool svF, uint8_t o_mode, uint8_t
   cmd[19] =  0x6B;                      // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 20);
+  Serial2.write(cmd, 20);
 }
 
 /**
@@ -378,7 +382,7 @@ void Emm_V5_Origin_Modify_Params(uint8_t addr, bool svF, uint8_t o_mode, uint8_t
   * @param    snF   ：多机同步标志，false为不启用，true为启用
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool snF)
+void motor :: Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool snF)
 {
   uint8_t cmd[16] = {0};
   
@@ -390,7 +394,7 @@ void Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool snF)
   cmd[4] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 5);
+  Serial2.write(cmd, 5);
 }
 
 /**
@@ -398,7 +402,7 @@ void Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool snF)
   * @param    addr  ：电机地址
   * @retval   地址 + 功能码 + 命令状态 + 校验字节
   */
-void Emm_V5_Origin_Interrupt(uint8_t addr)
+void motor :: Emm_V5_Origin_Interrupt(uint8_t addr)
 {
   uint8_t cmd[16] = {0};
   
@@ -409,7 +413,7 @@ void Emm_V5_Origin_Interrupt(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial.write(cmd, 4);
+  Serial2.write(cmd, 4);
 }
 
 /**
@@ -418,7 +422,7 @@ void Emm_V5_Origin_Interrupt(uint8_t addr)
   * @param    rxCount : 接收到的数据长度
   * @retval   无
   */
-void Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount)
+void motor :: Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount)
 {
   int i = 0;
   unsigned long lTime;                    // 上一时刻的时间
@@ -430,11 +434,11 @@ void Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount)
   // 开始接收数据
   while(1)
   {
-    if(Serial.available() > 0)            // 串口有数据进来
+    if(Serial2.available() > 0)            // 串口有数据进来
     {
       if(i <= 128)                        // 防止数组溢出，该值需要小于数组的长度
       {
-        rxCmd[i++] = Serial.read();       // 接收数据
+        rxCmd[i++] = Serial2.read();       // 接收数据
 
         lTime = millis();                 // 更新上一时刻的时间
       }
@@ -452,3 +456,4 @@ void Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount)
     }
   }
 }
+
