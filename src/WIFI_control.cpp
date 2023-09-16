@@ -116,6 +116,13 @@ void WIFI_control :: WiFi_control_init(){
     Button5.attach(button5_callback);
 }
 
+
+
+/**
+  * @brief    WiFi控制小车运行
+  * @param    None
+  * @retval   None
+  */
 void WIFI_control :: WiFi_control_run(){
     Blinker.run();
 }
