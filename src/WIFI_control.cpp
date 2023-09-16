@@ -14,13 +14,15 @@
 #include "Blinker.h"
 // #include "Blinker/BlinkerDebug.h"
 
-Car_control car_control;        // 小车控制类对象
-
 char auth[] = "3f19661dfb92";
 char ssid[] = "asus";
 char pswd[] = "00000000";
 
-int counter = 0;
+Car_control car_control;        // 小车控制类对象
+
+
+
+int counter = 0;        
 
 // 新建组件对象
 BlinkerButton Button1("btn-forward");  //前进组件绑定（按键）
@@ -95,7 +97,8 @@ void WIFI_control :: WiFi_control_init(){
     digitalWrite(LED_BUILTIN, HIGH);
 
 
-     car_control.Car_control_init();  // 初始化小车
+    car_control.Car_control_init();  // 初始化小车
+    
 
     Serial.begin(115200);  //初始化串口0，用于和电脑通信,打印调试信息
 
