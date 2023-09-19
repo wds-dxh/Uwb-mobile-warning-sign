@@ -1,7 +1,11 @@
-/**********************************************************
-*** WIFI控制类
-*** 编写作者：wds
-**********************************************************/
+/**
+ * @file WiFi控制类
+ * @author wds
+ * @date 2023/9/16
+ * @email wdsnpshy@163.com
+ * 博客：https://blog.csdn.net/weixin_63211230
+ * qq:3412363587
+*/
 
 #define BLINKER_PRINT Serial
 #define BLINKER_WIFI

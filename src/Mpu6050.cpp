@@ -1,9 +1,11 @@
-/**********************************************************
-*** 陀螺仪驱动程序
-*** 编写作者：wds
-***邮箱：wdsnpshy@163.com
-**********************************************************/
-
+/**
+ * @file 陀螺仪模块类
+ * @author wds
+ * @date 2023/9/14
+ * 邮箱：wdsnpshy@163.com
+ * 博客：https://blog.csdn.net/weixin_63211230
+ * qq:3412363587
+*/
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>

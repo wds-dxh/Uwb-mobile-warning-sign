@@ -3,6 +3,8 @@
 
 /**
  * @brief 雨滴检测驱动
+ * @param none
+ * @retval none
 */
 class Rain_sensor{
     public:

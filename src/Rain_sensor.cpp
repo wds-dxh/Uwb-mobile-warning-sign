@@ -1,10 +1,11 @@
-/**********************************************************
-*** 雨滴检测驱动
-*** 编写作者：wds
-*** 邮箱：wdsnpshy@163.com
-*** CSDN博客：https://blog.csdn.net/weixin_63211230
-*** qq:3412363587
-**********************************************************/
+/**
+ * @file 雨滴检测驱动
+ * @author wds
+ * @date 2023/9/16
+ * 邮箱：wdsnpshy@163.com
+ * 博客：https://blog.csdn.net/weixin_63211230
+ * qq:3412363587
+*/
 
 #include "Rain_sensor.h"
 #include "Arduino.h"
