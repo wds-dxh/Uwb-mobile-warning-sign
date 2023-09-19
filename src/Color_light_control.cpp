@@ -107,6 +107,7 @@ void Color_light_control::color_control_all(char color) {
  * @param   quantity_1  灯的数量
  * @param   color  灯的颜色 0-2 ——————RGB
  * @retval  none
+ * 注意事项：此功能需要放到一个线程中才可以实现，不能只运行一次
 */
 void Color_light_control::color_flash(uint8_t quantity_1,char color) {
 
@@ -125,12 +126,26 @@ void Color_light_control::color_flash(uint8_t quantity_1,char color) {
         strip.setPixelColor(i, 0, 0, 255);
         break;
     }
+    strip.show();
+    delay(40);
   }
-  strip.show();
-  delay(500);
-  for (int i = 0; i < quantity_1; i++) {
-    strip.setPixelColor(i, 0, 0, 0);
+  
+}
+
+
+
+
+/**
+ * @brief   全部亮任意颜色
+ * @param   R  红色亮度
+ * @param   G  绿色亮度
+ * @param   B  蓝色亮度
+ * @retval  none
+*/
+void Color_light_control::color_light_all_every(int R,int G,int B) {
+  for (int i = 0; i < LED_COUNT; i++) {
+    strip.setPixelColor(i, R, G, B);
+    strip.show();
   }
-  strip.show();
-  delay(500);
+  
 }

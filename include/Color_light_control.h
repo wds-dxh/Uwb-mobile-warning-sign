@@ -17,6 +17,9 @@ public:
     void color_control_all(char color);  // 控制全部灯光
     void color_flash(uint8_t quantity_1,char color);  // 闪烁灯光
 
+    void color_light_all_every(int R,int G,int B);  // 全部灯光亮度调节
+
+
 
 
 
