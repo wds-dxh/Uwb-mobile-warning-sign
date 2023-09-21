@@ -15,6 +15,7 @@
 #include "Mpu6050.h"  //陀螺仪模块  
 #include "Rain_sensor.h" //雨滴检测模块
 #include "Color_light_control.h" //灯光控制模块
+#include "Uwb_get_distance.h" //uwb测距模块
 
 #include <soc/soc.h> 
 #include <soc/rtc_cntl_reg.h>  //关闭低电压检测,避免无限重启
@@ -36,9 +37,12 @@ void Xothers(void *parameter) ;
 void setup() {
 
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);//关闭低电压检测,避免无限重启
-   
-    wifi_control.WiFi_control_init();  // 初始化WIFI
+
+  //  HardwareSerial& Serial_WIFI = Serial; //声明一个串口对象
+  //   wifi_control.WiFi_control_init(Serial_WIFI);  // 初始化WIFI
+    wifi_control.WiFi_control_init();  // 初始化WIFI 
     delay(1000);
+
 
 
 #if !USE_MULTCORE //
