@@ -27,6 +27,11 @@ typedef enum {
 
 
 class  motor{
+
+private:
+      HardwareSerial& serial;
+
+
 public:
 
     void Emm_V5_Reset_CurPos_To_Zero(uint8_t addr); // 将当前位置清零

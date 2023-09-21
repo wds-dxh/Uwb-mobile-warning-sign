@@ -10,8 +10,10 @@
 
 #include <Arduino.h>
 #include "motor.h"
+#define MORTOR_DEBUG Serial
 
-// 注意：串口和USB下载口共用串口（0,1），USB上传程序时，先拔掉串口线.
+// #define MORTOR_DEBUG Serial
+
 
 // #define    ABS(x)    ((x) > 0 ? (x) : -(x)) 
 // #define LED_BUILTIN 18
@@ -112,7 +114,7 @@ void motor :: Emm_V5_Reset_CurPos_To_Zero(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 4);
+  MORTOR_DEBUG.write(cmd, 4);
 }
 
 /**
@@ -131,7 +133,7 @@ void motor :: Emm_V5_Reset_Clog_Pro(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 4);
+  MORTOR_DEBUG.write(cmd, 4);
 }
 
 /**
@@ -170,7 +172,7 @@ void motor::Emm_V5_Read_Sys_Params(uint8_t addr, SysParams_t s)
   cmd[i] = 0x6B; ++i;                   // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, i);
+  MORTOR_DEBUG.write(cmd, i);
 }
 
 /**
@@ -193,7 +195,7 @@ void motor :: Emm_V5_Modify_Ctrl_Mode(uint8_t addr, bool svF, uint8_t ctrl_mode)
   cmd[5] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 6);
+  MORTOR_DEBUG.write(cmd, 6);
 }
 
 /**
@@ -216,7 +218,7 @@ void motor :: Emm_V5_En_Control(uint8_t addr, bool state, bool snF)
   cmd[5] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 6);
+  MORTOR_DEBUG.write(cmd, 6);
 }
 
 /**
@@ -243,7 +245,7 @@ void motor :: Emm_V5_Vel_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_
   cmd[7] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 8);
+  MORTOR_DEBUG.write(cmd, 8);
 }
 
 /**
@@ -277,7 +279,7 @@ void motor :: Emm_V5_Pos_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_
   cmd[12] =  0x6B;                      // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 13);
+  MORTOR_DEBUG.write(cmd, 13);
 }
 
 /**
@@ -298,7 +300,7 @@ void motor :: Emm_V5_Stop_Now(uint8_t addr, bool snF)
   cmd[4] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 5);
+  MORTOR_DEBUG.write(cmd, 5);
 }
 
 /**
@@ -317,7 +319,7 @@ void motor :: Emm_V5_Synchronous_motion(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 4);
+  MORTOR_DEBUG.write(cmd, 4);
 }
 
 /**
@@ -338,7 +340,7 @@ void motor :: Emm_V5_Origin_Set_O(uint8_t addr, bool svF)
   cmd[4] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 5);
+  MORTOR_DEBUG.write(cmd, 5);
 }
 
 /**
@@ -382,7 +384,7 @@ void motor :: Emm_V5_Origin_Modify_Params(uint8_t addr, bool svF, uint8_t o_mode
   cmd[19] =  0x6B;                      // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 20);
+  MORTOR_DEBUG.write(cmd, 20);
 }
 
 /**
@@ -404,7 +406,7 @@ void motor :: Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool sn
   cmd[4] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 5);
+  MORTOR_DEBUG.write(cmd, 5);
 }
 
 /**
@@ -423,7 +425,7 @@ void motor :: Emm_V5_Origin_Interrupt(uint8_t addr)
   cmd[3] =  0x6B;                       // 校验字节
   
   // 发送命令
-  Serial2.write(cmd, 4);
+  MORTOR_DEBUG.write(cmd, 4);
 }
 
 /**

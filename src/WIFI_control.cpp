@@ -7,7 +7,7 @@
  * qq:3412363587
 */
 
-#define BLINKER_PRINT Serial
+// #define BLINKER_PRINT Serial
 #define BLINKER_WIFI
 
 #define LED_BUILTIN 2     //测试是否连接成功的指示灯
@@ -55,6 +55,21 @@ void dataRead(const String & data)
 void button1_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
     car_control.Car_forward(5,10);digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+
+//       uint8_t cmd[16] = {0};
+
+//   // 装载命令
+//   cmd[0] =  0;                       // 地址
+//   cmd[1] =  0xF6;                       // 功能码
+//   cmd[2] =  0;                        // 方向
+//   cmd[3] =  0;        // 速度(RPM)高8位字节
+//   cmd[4] =  0;        // 速度(RPM)低8位字节
+//   cmd[5] =  0;                        // 加速度，注意：0是直接启动
+//   cmd[6] =  0;                        // 多机同步运动标志
+//   cmd[7] =  0x6B;                       // 校验字节
+  
+//   // 发送命令
+//   Serial.write(cmd, 8);
 }
 
 
@@ -112,7 +127,9 @@ void WIFI_control :: WiFi_control_init(){
 
     // 初始化blinker
     Blinker.begin(auth, ssid, pswd);
+
     Blinker.attachData(dataRead);
+
     Button1.attach(button1_callback);
     Button2.attach(button2_callback);
     Button3.attach(button3_callback);

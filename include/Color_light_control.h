@@ -1,6 +1,7 @@
 #ifndef COLOR_LIGHT_CONTROL_H
 #define COLOR_LIGHT_CONTROL_H
 
+#include <Arduino.h>
 /**
   * @brief    灯光控制类
   */

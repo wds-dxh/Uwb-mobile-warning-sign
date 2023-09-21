@@ -13,9 +13,6 @@
 
 
 
-
-
-
 motor motor1;
 
 
@@ -27,13 +24,13 @@ motor motor1;
 
 void Car_control :: Car_control_init(){
 
-  // 初始化串口
-  Serial2.begin(115200);
+  // // 初始化串口
+  // Serial2.begin(115200);
 
   // 等待串口初始化完成
-  while (!Serial2) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  // while (!Serial2) {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
 
   // 上电延时2秒等待Emm_V5.0闭环初始化完毕
   delay(2000);
