@@ -19,6 +19,8 @@
 #include <soc/soc.h> 
 #include <soc/rtc_cntl_reg.h>  //关闭低电压检测,避免无限重启
 
+
+
 #define USE_MULTCORE  1 //使用多核心
 
 WIFI_control wifi_control;
