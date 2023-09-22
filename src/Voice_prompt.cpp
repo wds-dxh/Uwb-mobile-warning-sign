@@ -41,7 +41,7 @@ void Voice_prompt::Vioce_prompt_run(uint8_t weather){
 
     switch (weather)
     {
-    case 1:
+    case 1:   //雨雪天气
         digitalWrite(VOICE_PROMPT_PIN_normal, LOW);
         digitalWrite(VOICE_PROMPT_PIN_rain, HIGH);
         digitalWrite(VOICE_PROMPT_PIN_reserve1, HIGH);
@@ -49,7 +49,7 @@ void Voice_prompt::Vioce_prompt_run(uint8_t weather){
         break;
 
 
-    case 2:
+    case 2:  //正常天气
         digitalWrite(VOICE_PROMPT_PIN_normal, HIGH);
         digitalWrite(VOICE_PROMPT_PIN_rain, LOW);
         digitalWrite(VOICE_PROMPT_PIN_reserve1, HIGH);
@@ -57,7 +57,7 @@ void Voice_prompt::Vioce_prompt_run(uint8_t weather){
         break;
 
 
-    case 3:
+    case 3:  //预留提示
         digitalWrite(VOICE_PROMPT_PIN_normal, HIGH);
         digitalWrite(VOICE_PROMPT_PIN_rain, LOW);
         digitalWrite(VOICE_PROMPT_PIN_reserve1, HIGH);
@@ -65,7 +65,7 @@ void Voice_prompt::Vioce_prompt_run(uint8_t weather){
         break;
 
 
-    case 4:
+    case 4://预留提示
         digitalWrite(VOICE_PROMPT_PIN_normal, HIGH);
         digitalWrite(VOICE_PROMPT_PIN_rain, LOW);
         digitalWrite(VOICE_PROMPT_PIN_reserve1, HIGH);

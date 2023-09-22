@@ -9,18 +9,16 @@
 
 #include<Arduino.h>
 #include "Uwb_get_distance.h"
-
+int count_go = 0;
 
 /**
  * @brief 初始化uwb测距模块
  * @param serial 串口对象
  * @return None
 */
-void Uwb_get_distance::Uwb_get_distance_init(HardwareSerial& serial,unsigned long baud){
+void Uwb_get_distance::Uwb_get_distance_init(HardwareSerial& Serial_WIFI,unsigned long baud){
 
-        serial.begin(baud);
-
-
+        Serial_WIFI.begin(baud);
 
 }
 
@@ -31,6 +29,7 @@ void Uwb_get_distance::Uwb_get_distance_init(HardwareSerial& serial,unsigned lon
 */
 int Uwb_get_distance::Uwb_get_distance_run(int anchor){
 
+
     if (Serial.available()) 
   {
 
@@ -38,7 +37,8 @@ int Uwb_get_distance::Uwb_get_distance_run(int anchor){
 
     if (data.startsWith("m")) {
       char type;
-      int mask, range[4],range_return[4],lnum, seq, tid, aid;
+      int mask, range_return[4],lnum, seq, tid, aid;
+      int range[4] = {0};
       int rangetime;
       sscanf(data.c_str(), "m%c %x %x %x %x %x %x %x %x %*c%d:%d", &type, &mask, 
       &range[0], &range[1], &range[2], &range[3], &lnum, &seq, &rangetime, &tid, &aid);
@@ -53,7 +53,6 @@ int Uwb_get_distance::Uwb_get_distance_run(int anchor){
 
     }
   }
-
 
 }
 

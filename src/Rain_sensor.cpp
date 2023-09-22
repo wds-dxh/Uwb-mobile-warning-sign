@@ -10,7 +10,7 @@
 #include "Rain_sensor.h"
 #include "Arduino.h"
 
-#define Serial_debugging_Rain true    
+// #define Serial_debugging_Rain true    
 
 #define RAIN_ADC 26                     //模拟输入信号
 #define RAIND_igital_quantity     27  //开关信号

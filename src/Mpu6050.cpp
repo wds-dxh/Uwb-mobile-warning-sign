@@ -24,25 +24,29 @@ Adafruit_MPU6050 mpu;
  * 
 */
 void Mpu6050::mpu6050_init() {
+    
+    // Wire.begin();  //初始化I2C    
 
   //初始化陀螺仪
-  if (!mpu.begin()) {
+  if (!mpu.begin()) {   //初始化陀螺仪
     Serial.println("Failed to find MPU6050 chip");
     while (1) {
       delay(10);
     }
   }
 
-  mpu.setAccelerometerRange(MPU6050_RANGE_16_G);
-  mpu.setGyroRange(MPU6050_RANGE_250_DEG);
-  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
-  Serial.println("");
+  mpu.setAccelerometerRange(MPU6050_RANGE_16_G); //设置加速度范围
+  mpu.setGyroRange(MPU6050_RANGE_250_DEG);  //设置陀螺仪范围
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);  //设置陀螺仪带宽
+  // Serial.println("");
   delay(100);
 }
 
 
+
+
 /**
- * @brief   陀螺仪获取数据
+ * @brief   陀螺仪获取数据并打印
  * @param   none
  * @retval  none
  * 

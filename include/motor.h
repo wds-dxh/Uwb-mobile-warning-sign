@@ -28,9 +28,6 @@ typedef enum {
 
 class  motor{
 
-private:
-      HardwareSerial& serial;
-
 
 public:
 

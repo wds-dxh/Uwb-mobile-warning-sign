@@ -9,6 +9,7 @@
 
 // #define BLINKER_PRINT Serial
 #define BLINKER_WIFI
+#define BLINKER_WITHOUT_SSL
 
 #define LED_BUILTIN 2     //测试是否连接成功的指示灯
 
@@ -120,6 +121,10 @@ void WIFI_control :: WiFi_control_init(){
     
 
     Serial.begin(115200);  //初始化串口0，用于和电脑通信,打印调试信息
+    
+//     while (!Serial) {
+//     delay(10); // will pause Zero, Leonardo, etc until serial console opens
+//   }
 
     #if defined(BLINKER_PRINT)
         BLINKER_DEBUG.stream(BLINKER_PRINT);
@@ -139,38 +144,38 @@ void WIFI_control :: WiFi_control_init(){
 
 
 
-/**
-  * @brief    WiFi控制类初始化(链接blinker)
-  * @param    None
-  * @retval   None
-  */
-void WIFI_control :: WiFi_control_init(HardwareSerial& Serial_WIFI){
+// /**
+//   * @brief    WiFi控制类初始化(链接blinker)
+//   * @param    Serial_WIFI  串口对象
+//   * @retval   None
+//   */
+// void WIFI_control :: WiFi_control_init(HardwareSerial& Serial_WIFI){
     
-    // 初始化有LED的IO  用于测试是否连接成功
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, HIGH);
+//     // 初始化有LED的IO  用于测试是否连接成功
+//     pinMode(LED_BUILTIN, OUTPUT);
+//     digitalWrite(LED_BUILTIN, HIGH);
 
 
-    car_control.Car_control_init();  // 初始化小车
+//     car_control.Car_control_init();  // 初始化小车
     
 
-    Serial_WIFI.begin(115200);  //初始化串口0，用于和电脑通信,打印调试信息
+//     Serial_WIFI.begin(115200);  //初始化串口0，用于和电脑通信,打印调试信息
 
-    #if defined(BLINKER_PRINT)
-        BLINKER_DEBUG.stream(BLINKER_PRINT);
-    #endif
+//     #if defined(BLINKER_PRINT)
+//         BLINKER_DEBUG.stream(BLINKER_PRINT);
+//     #endif
 
-    // 初始化blinker
-    Blinker.begin(auth, ssid, pswd);
+//     // 初始化blinker
+//     Blinker.begin(auth, ssid, pswd);
 
-    Blinker.attachData(dataRead);
+//     Blinker.attachData(dataRead);
 
-    Button1.attach(button1_callback);
-    Button2.attach(button2_callback);
-    Button3.attach(button3_callback);
-    Button4.attach(button4_callback);
-    Button5.attach(button5_callback);
-}
+//     Button1.attach(button1_callback);
+//     Button2.attach(button2_callback);
+//     Button3.attach(button3_callback);
+//     Button4.attach(button4_callback);
+//     Button5.attach(button5_callback);
+// }
 
 
 

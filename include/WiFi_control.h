@@ -12,7 +12,7 @@
 
 class WIFI_control{
 public:
-    void WiFi_control_init(HardwareSerial& Serial_WIFI);    //链接
+    // void WiFi_control_init(HardwareSerial& Serial_WIFI);    //链接
     void WiFi_control_init();
     void WiFi_control_run();     //运行
 
