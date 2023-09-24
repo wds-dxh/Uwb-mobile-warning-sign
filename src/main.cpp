@@ -28,7 +28,7 @@
 
 #define USE_MULTCORE  1 //使用多核心
 #define USW_MULTTHREAD 0 //使用多线程
-#define car_go false //小车运行的距离
+#define car_go true //小车运行的距离
 
 
 extern Adafruit_NeoPixel strip;
@@ -64,7 +64,7 @@ extern int range[4];
 void Xcontrol_wifi(void *parameter) ;
 void Xothers(void *parameter) ;
 
-int run_count = 0; //运行次数
+int run_count = 0; //运行到距离uwb固定位置
 
 #define SPEED 50 //速度
 
@@ -193,7 +193,7 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
       }
 
 
-
+      wifi_control.WiFi_control_run();     // wifi控制小车运行
       Serial.print("distance:");
       Serial.println(ypr[0] * 180/M_PI);
 

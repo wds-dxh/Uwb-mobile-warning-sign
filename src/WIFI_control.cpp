@@ -7,6 +7,7 @@
  * qq:3412363587
 */
 extern float ypr[3];
+extern int run_count; //运行到距离uwb固定位置
 
 // #define BLINKER_PRINT Serial
 #define BLINKER_WIFI
@@ -48,8 +49,8 @@ char mark_rain;
 extern Rain_sensor rain_sensor; //声明在其他文件中定义的 rain_sensor 对象，避免重复定义
 
 // 新建组件对象
-BlinkerNumber Number1("num-uwb");   // 还未用到
-BlinkerNumber Number2("num-angle");   // 还未用到
+BlinkerNumber Number1("num-uwb");   // uwb距离
+BlinkerNumber Number2("num-angle");   //陀螺仪角度
 
 
 
@@ -79,8 +80,11 @@ BlinkerButton Button12("btn-blue"); //彩灯
 
 BlinkerButton Button13("btn-yushui"); //雨水检测组件绑定（按键）
 
+BlinkerButton Button14("btn-run"); 
+
 BlinkerSlider Slider1("luminance"); //滑动条组件绑定（滑动条）
 
+BlinkerSlider Slider2("angle"); //滑动条组件绑定（滑动条）
 
 
 
@@ -208,11 +212,17 @@ void button12_callback(const String & state) {
     // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
 }
 
-//按下按键十三，uwb测距
+//按下按键十三，天气控制灯光
 void button13_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
     mark_rain = 'A';
     // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键十四，小车停止行驶到固定距离
+void button14_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    run_count = 1;
 }
 
 
@@ -228,6 +238,13 @@ void slider1_callback(int32_t value)
     Serial.println(luminance);
 }
 
+
+//滑动滑动条，调节小车角度
+void slider2_callback(int32_t value)
+{
+    BLINKER_LOG("get slider value: ", value);
+    
+}
 
 
 
@@ -279,6 +296,7 @@ void WIFI_control :: WiFi_control_init(){
     Button11.attach(button11_callback);//绿灯闪烁
     Button12.attach(button12_callback);//彩灯闪烁
     Button13.attach(button13_callback);//雨水控制
+    Button14.attach(button14_callback);//停止运动到uwb固定距离
 
     Slider1.attach(slider1_callback);//滑动条，调节灯光亮度
 }
