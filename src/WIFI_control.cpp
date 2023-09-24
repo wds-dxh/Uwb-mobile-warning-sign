@@ -37,7 +37,7 @@ char auth[] = "3f19661dfb92";
 
 
 Car_control car_control;        // 小车控制类对象
-uint16_t SPEED = 10;             // 速度
+uint16_t SPEED = 50;             // 速度
 uint16_t ACC = 999;               // 加速度
 char mark_led = 'A';           // 标记灯光是否闪烁
 int32_t luminance =255;             // 灯光亮度

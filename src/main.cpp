@@ -24,14 +24,14 @@
 #include <soc/soc.h> 
 #include <soc/rtc_cntl_reg.h>  //关闭低电压检测,避免无限重启
 
-#define PID_P 1 //比例系数
+#define PID_P 50 //比例系数
 
 #define USE_MULTCORE  1 //使用多核心
 #define USW_MULTTHREAD 0 //使用多线程
-#define car_go true //小车运行的距离
+#define car_go false //小车运行的距离
 
 
-
+extern Adafruit_NeoPixel strip;
 WIFI_control wifi_control;
 Voice_prompt voice_prompt;
 Rain_sensor rain_sensor;
@@ -44,6 +44,7 @@ extern float ypr[3];
 extern Adafruit_NeoPixel strip;
 extern uint8_t luminance;
 int count = 0;
+
 
 int acc_main = 10;  //加速度
 int acc_main_1 = 10;//加速度
@@ -172,13 +173,13 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
       
      
 
-      if(ypr[0] * 180/M_PI>1){  
+      if(ypr[0] * 180/M_PI>0.5){  
      
-       car_control.Car_left_rotation(SPEED, acc_main); //左转
+       car_control.Car_left_rotation(abs(PID_P*(ypr[0] * 180/M_PI)), acc_main); //左转
       }
 
-      if(ypr[0] * 180/M_PI<1){
-      car_control.Car_right_rotation(SPEED, acc_main); //右转
+      if(ypr[0] * 180/M_PI<-0.5){
+      car_control.Car_right_rotation(abs(PID_P*(ypr[0] * 180/M_PI)), acc_main); //右转
       }  
 
        if(range[0]==10000){
@@ -214,8 +215,10 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
       wifi_control.Wifi_data_transmission(range[0]); //wifi数据传输
 
       wifi_control.WiFi_control_run();     // wifi控制小车运行
-      Serial.println(range[0]);
+      // Serial.println(range[0]);
+      strip.setBrightness(luminance); //设置亮度
     }
+
    vTaskDelete(NULL);  
 
 }
