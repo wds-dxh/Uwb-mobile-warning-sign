@@ -10,6 +10,8 @@
 #include "Car_control.h"
 #include "motor.h"
 #include "Arduino.h"
+#include <cstdlib>//取整形abs()传入参数
+
 
 
 // #define power_low 1 //电压低时，不运行
@@ -171,6 +173,34 @@ motor1.Emm_V5_Stop_Now(0, false);delay(DELAY_TIME);
 
 }
 
+/**
+ * @brief    位置控制式旋转
+ * @param    clk ：旋转的脉冲数,大于0右转
+ * @param    vel ：速度       ，范围0 - 5000RPM
+ * @param    acc ：加速度     ，范围0 - 255，注意：0是直接启动
+ * @retval   无
+*/
+void Car_control :: Car_control_rotate(uint32_t clk,uint16_t vel, uint8_t acc){
+
+if(clk>0){
+
+#if power_low
+motor1.Emm_V5_Pos_Control(0, 0, vel, acc,clk, false, false);delay(DELAY_TIME);
+#endif
+
+motor1.Emm_V5_Pos_Control(0, 0, vel, acc,clk, false, false);delay(DELAY_TIME);
+}
+      
+if(clk>0){
+
+#if power_low
+motor1.Emm_V5_Pos_Control(0, 1, vel, acc,-clk, false, false);delay(DELAY_TIME);
+#endif
+
+motor1.Emm_V5_Pos_Control(0, 1, vel, acc,-clk, false, false);delay(DELAY_TIME);
+}
+
+}
 
 
 

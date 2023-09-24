@@ -243,6 +243,7 @@ void slider1_callback(int32_t value)
 void slider2_callback(int32_t value)
 {
     BLINKER_LOG("get slider value: ", value);
+    car_control.Car_control_rotate(54*value,50, 0);
     
 }
 

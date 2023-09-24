@@ -25,6 +25,9 @@ public:
     void Car_left_rotation(uint16_t vel, uint8_t acc);      //向左旋转
     void Car_stop();                                        //停止
 
+
+    void Car_control_rotate(uint32_t clk,uint16_t vel, uint8_t acc);     //位置控制式旋转
+
     
 
 
