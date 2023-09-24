@@ -17,20 +17,43 @@
 #include "WiFi_control.h"
 #include "Arduino.h"
 #include "Blinker.h"
+#include "Color_light_control.h"
 // #include "Blinker/BlinkerDebug.h"
+#include "Rain_sensor.h"
+
+extern  Color_light_control color_light_control; //声明在其他文件中定义的 color_light_control 对象，避免重复定义
+int count_go;
+extern uint8_t led_quantity;
+
 
 char auth[] = "3f19661dfb92";
-char ssid[] = "asus";
-char pswd[] = "00000000";
+// char ssid[] = "asus";
+// char pswd[] = "00000000";
+
+
+ char ssid[] = "wds";
+ char pswd[] = "wdsshy0320";
+
+
 
 Car_control car_control;        // 小车控制类对象
 uint16_t SPEED = 10;             // 速度
 uint16_t ACC = 999;               // 加速度
-
-
-int counter = 0;        
+char mark_led = 'A';           // 标记灯光是否闪烁
+int32_t luminance =255;             // 灯光亮度
+int counter = 0;
+extern int count; 
+char mark_rain;      
+extern Rain_sensor rain_sensor; //声明在其他文件中定义的 rain_sensor 对象，避免重复定义
 
 // 新建组件对象
+BlinkerNumber Number1("num-uwb");   // 还未用到
+
+
+
+
+
+
 BlinkerButton Button1("btn-forward");  //前进组件绑定（按键）
 
 BlinkerButton Button2("btn-backward"); //后退组件绑定（按键）
@@ -43,10 +66,24 @@ BlinkerButton Button5("btn-toleft");  //左平移组件绑定（按键）
 BlinkerButton Button6("btn-speedup"); //速度+组件绑定（按键）
 BlinkerButton Button7("btn-speeddown"); //速度-组件绑定（按键）
 
-BlinkerNumber Number1("num-abc");   // 还未用到
+
 
 BlinkerButton Button8("btn-left"); //左转组件绑定（按键）
 BlinkerButton Button9("btn-right"); //右转组件绑定（按键）
+
+
+BlinkerButton Button10("btn-red"); //红灯组件绑定（按键）
+BlinkerButton Button11("btn-green"); //绿灯组件绑定（按键）
+BlinkerButton Button12("btn-blue"); //彩灯
+
+BlinkerButton Button13("btn-yushui"); //雨水检测组件绑定（按键）
+
+BlinkerSlider Slider1("luminance"); //滑动条组件绑定（滑动条）
+
+
+
+
+
 
 
 // 如果未绑定的组件被触发，则会执行其中内容
@@ -98,6 +135,8 @@ void button3_callback(const String & state) {
     car_control.Car_stop();
     // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
     uint16_t SPEED = 10; 
+    color_light_control.colr_light_all_off(led_quantity);
+    mark_led = 'A';  //停止灯光
 }
 
 
@@ -143,6 +182,50 @@ void button9_callback(const String & state) {
     // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
 }
 
+//按下按键十，红灯闪烁
+void button10_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    // color_light_control.color_flash(10,'R');  //闪烁红灯
+    mark_led = 'R';
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键十一，绿灯闪烁
+void button11_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    // color_light_control.color_flash(10,'G');  //闪烁绿灯
+    mark_led = 'G';
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键十二，彩灯灯闪烁
+void button12_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    // color_light_control.color_flash(10,'B');  //闪烁彩灯
+    // color_light_control.color_riot_of_colours(10);  //七彩灯
+    mark_led = 'B';
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键十三，uwb测距
+void button13_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    mark_rain = 'A';
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+
+
+
+
+
+//滑动滑动条，调节灯光亮度
+void slider1_callback(int32_t value)
+{
+    BLINKER_LOG("get slider value: ", value);
+    luminance = value;
+    Serial.println(luminance);
+}
 
 
 
@@ -189,6 +272,14 @@ void WIFI_control :: WiFi_control_init(){
     Button7.attach(button7_callback);
     Button8.attach(button8_callback);
     Button9.attach(button9_callback);
+
+
+    Button10.attach(button10_callback);//红灯闪烁
+    Button11.attach(button11_callback);//绿灯闪烁
+    Button12.attach(button12_callback);//彩灯闪烁
+    Button13.attach(button13_callback);//雨水控制
+
+    Slider1.attach(slider1_callback);//滑动条，调节灯光亮度
 }
 
 
@@ -235,5 +326,33 @@ void WIFI_control :: WiFi_control_init(){
   */
 void WIFI_control :: WiFi_control_run(){
     Blinker.run();
+    
 }
 
+
+
+
+
+
+/**
+ * @brief   雨滴检测,正常控制灯光
+ * @param   None
+ * @retval  None
+*/
+void WIFI_control :: Rain_control(){
+    if (rain_sensor.Rain_sensor_is_rain() == false){
+      
+
+      mark_led = 'R';
+      }
+else{
+    
+
+      mark_led = 'B';  //七彩灯
+    }
+}
+
+
+void WIFI_control :: Wifi_data_transmission(int range){
+    Number1.print(range);
+}

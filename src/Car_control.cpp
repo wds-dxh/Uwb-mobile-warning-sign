@@ -12,7 +12,7 @@
 #include "Arduino.h"
 
 
-
+// #define power_low 1 //电压低时，不运行
 motor motor1;
 
 
@@ -46,6 +46,11 @@ void Car_control :: Car_control_init(){
   */
 void Car_control :: Car_forward(uint16_t vel, uint8_t acc){
 
+#if power_low
+
+motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
+#endif
+
     motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
@@ -61,6 +66,9 @@ void Car_control :: Car_forward(uint16_t vel, uint8_t acc){
   * @retval   条件不满足返回 地址 FF E2 6B，错误命令返回 地址 00 EE 6B
   */
 void Car_control :: Car_back(uint16_t vel, uint8_t acc){
+#if power_low
+motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
+#endif
 
     motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
@@ -78,6 +86,9 @@ void Car_control :: Car_back(uint16_t vel, uint8_t acc){
   * @retval   条件不满足返回 地址 FF E2 6B，错误命令返回 地址 00 EE 6B
   */
 void Car_control :: Car_right_translation(uint16_t vel, uint8_t acc){
+#if power_low
+motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
+#endif
 
     motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
@@ -95,6 +106,9 @@ void Car_control :: Car_right_translation(uint16_t vel, uint8_t acc){
   * @retval   条件不满足返回 地址 FF E2 6B，错误命令返回 地址 00 EE 6B
   */
 void Car_control :: Car_left_translation(uint16_t vel, uint8_t acc){
+#if power_low
+motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
+#endif
 
     motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
@@ -112,7 +126,9 @@ void Car_control :: Car_left_translation(uint16_t vel, uint8_t acc){
  * @retval   条件不满足返回 地址 FF E2 6B，错误命令返回 地址 00 EE 6B
  */
 void    Car_control :: Car_right_rotation(uint16_t vel, uint8_t acc){
-
+#if power_low
+motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
+#endif
     motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
@@ -129,7 +145,9 @@ void    Car_control :: Car_right_rotation(uint16_t vel, uint8_t acc){
  * @retval   条件不满足返回 地址 FF E2 6B，错误命令返回 地址 00 EE 6B
  */
 void    Car_control :: Car_left_rotation(uint16_t vel, uint8_t acc){
-
+#if power_low
+motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
+#endif
     motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
@@ -146,7 +164,9 @@ void    Car_control :: Car_left_rotation(uint16_t vel, uint8_t acc){
 
 void    Car_control :: Car_stop(){
 
-
+#if power_low
+motor1.Emm_V5_Stop_Now(0, false);delay(DELAY_TIME);
+#endif
     motor1.Emm_V5_Stop_Now(0, false);delay(DELAY_TIME);
 
 }

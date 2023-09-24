@@ -18,6 +18,8 @@ public:
 
     void color_flash(uint8_t quantity_1,char color);  // 闪烁灯光
     void color_riot_of_colours(uint8_t quantity);  // 七彩灯
+
+    void colr_light_all_off(uint8_t quantity);  // 关闭全部灯光
     
 
 

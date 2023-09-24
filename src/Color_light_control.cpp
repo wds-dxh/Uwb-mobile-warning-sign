@@ -73,8 +73,9 @@ void Color_light_control::color_off(uint16_t Num) {
 void Color_light_control::color_riot_of_colours(uint8_t quantity) {
   for (int i = 0; i < quantity; i++) {
     strip.setPixelColor(i, random(0, 255), random(0, 255), random(0, 255));
+    strip.show();
   }
-  strip.show();
+  
 }
 
 
@@ -127,7 +128,7 @@ void Color_light_control::color_flash(uint8_t quantity_1,char color) {
         break;
     }
     strip.show();
-    delay(40);
+    delay(10);
   }
   
 }
@@ -150,4 +151,18 @@ void Color_light_control::color_light_all_every(int R,int G,int B) {
   
 }
 
+
+/**
+ * @brief   关闭全部灯光
+ * @param   quantity  灯的数量
+ * @retval  none
+*/
+void Color_light_control::colr_light_all_off(uint8_t quantity) {
+  for (int i = 0; i < quantity; i++) {
+    strip.setPixelColor(i, 0, 0, 0);
+    strip.show();
+    delay(10);
+  }
+  
+}
 

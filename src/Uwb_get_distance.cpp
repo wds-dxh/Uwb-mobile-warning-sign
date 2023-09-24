@@ -9,7 +9,10 @@
 
 #include<Arduino.h>
 #include "Uwb_get_distance.h"
-int count_go = 0;
+char type;
+int mask, range_return[4],lnum, seq, tid, aid;
+int range[4] = {0};
+int rangetime;
 
 /**
  * @brief 初始化uwb测距模块
@@ -27,19 +30,16 @@ void Uwb_get_distance::Uwb_get_distance_init(HardwareSerial& Serial_WIFI,unsigne
  * @param anchor 锚点号0-3
  * @return int* 返回数组，分别为到0123号锚点的距离
 */
-int Uwb_get_distance::Uwb_get_distance_run(int anchor){
+void Uwb_get_distance::Uwb_get_distance_run(){
 
 
-    if (Serial.available()) 
+    if (Serial2.available()) 
   {
 
-    String data = Serial.readStringUntil('\n');  // 从串口读取一行数据，直到遇到换行符
+    String data = Serial2.readStringUntil('\n');  // 从串口读取一行数据，直到遇到换行符
 
     if (data.startsWith("m")) {
-      char type;
-      int mask, range_return[4],lnum, seq, tid, aid;
-      int range[4] = {0};
-      int rangetime;
+    
       sscanf(data.c_str(), "m%c %x %x %x %x %x %x %x %x %*c%d:%d", &type, &mask, 
       &range[0], &range[1], &range[2], &range[3], &lnum, &seq, &rangetime, &tid, &aid);
 
@@ -48,7 +48,7 @@ int Uwb_get_distance::Uwb_get_distance_run(int anchor){
     //     range[i]=range[i];
     //   }
     //     return range_return;
-        return range[anchor];
+        // return range[anchor];
 
 
     }
