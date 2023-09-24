@@ -46,10 +46,10 @@ void Car_control :: Car_control_init(){
   */
 void Car_control :: Car_forward(uint16_t vel, uint8_t acc){
 
-    motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(4, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(4, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Synchronous_motion(0);delay(DELAY_TIME);
 
 }
@@ -62,10 +62,10 @@ void Car_control :: Car_forward(uint16_t vel, uint8_t acc){
   */
 void Car_control :: Car_back(uint16_t vel, uint8_t acc){
 
-    motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(4, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(4, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Synchronous_motion(0);delay(DELAY_TIME);
 
 }
@@ -79,10 +79,10 @@ void Car_control :: Car_back(uint16_t vel, uint8_t acc){
   */
 void Car_control :: Car_right_translation(uint16_t vel, uint8_t acc){
 
-    motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(4, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(4, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Synchronous_motion(0);delay(DELAY_TIME);
 
 }
@@ -96,10 +96,10 @@ void Car_control :: Car_right_translation(uint16_t vel, uint8_t acc){
   */
 void Car_control :: Car_left_translation(uint16_t vel, uint8_t acc){
 
-    motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(4, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(4, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Synchronous_motion(0);delay(DELAY_TIME);
 
 }
@@ -113,10 +113,10 @@ void Car_control :: Car_left_translation(uint16_t vel, uint8_t acc){
  */
 void    Car_control :: Car_right_rotation(uint16_t vel, uint8_t acc){
 
-    motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(4, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(4, 0, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Synchronous_motion(0);delay(DELAY_TIME);
 
 }
@@ -130,10 +130,10 @@ void    Car_control :: Car_right_rotation(uint16_t vel, uint8_t acc){
  */
 void    Car_control :: Car_left_rotation(uint16_t vel, uint8_t acc){
 
-    motor1.Emm_V5_Vel_Control(1, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(2, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(3, 0, vel, acc, true);delay(DELAY_TIME);
-    motor1.Emm_V5_Vel_Control(4, 0, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(1, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(2, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(3, 1, vel, acc, true);delay(DELAY_TIME);
+    motor1.Emm_V5_Vel_Control(4, 1, vel, acc, true);delay(DELAY_TIME);
     motor1.Emm_V5_Synchronous_motion(0);delay(DELAY_TIME);
 }
 

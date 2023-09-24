@@ -14,7 +14,7 @@
 #include <Arduino.h>
 #include "WiFi_control.h" //wifi控制小车运行
 #include "Voice_prompt.h"  //语音提示模块
-#include "Mpu6050.h"  //陀螺仪模块  
+#include"Mpu6050_eleccat.h"
 #include "Rain_sensor.h" //雨滴检测模块
 #include "Color_light_control.h" //灯光控制模块
 #include "Uwb_get_distance.h" //uwb测距模块
@@ -26,7 +26,7 @@
 
 #define USE_MULTCORE  1 //使用多核心
 #define USW_MULTTHREAD 0 //使用多线程
-#define car_go false //小车运行的距离
+#define car_go true //小车运行的距离
 
 
 
@@ -35,9 +35,14 @@ Voice_prompt voice_prompt;
 Rain_sensor rain_sensor;
 Color_light_control color_light_control;
 Uwb_get_distance uwb_get_distance;
-Mpu6050 mpu6050;                // 陀螺仪类对象
+Mpu6050_eleccat mpu6050;
 extern Car_control car_control;       // 声明在其他文件中定义的 car_control 对象，避免重复定义
 extern int count_go;
+extern float ypr[3];
+int count = 0;
+int acc_main = 0;
+int acc_main_1 = 10;
+
 
 
 
@@ -46,10 +51,17 @@ void Xothers(void *parameter) ;
 
 int run_count = 0; //运行次数
 
+
+
+
 void setup() {
+
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);//关闭低电压检测,避免无限重启
     
-    wifi_control.WiFi_control_init();  // 初始化WIFI 
+    wifi_control.WiFi_control_init();  // 初始化WIFI
+
+    mpu6050.Mpu6050_eleccat_init(); //初始化陀螺仪
+
     HardwareSerial& Serial_WIFI = Serial2; //声明一个串口对象   可以不声明，直接用Serial2
     
     uwb_get_distance.Uwb_get_distance_init(Serial_WIFI,115200); //初始化uwb测距模块
@@ -92,29 +104,41 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
  
 {
   #if  (car_go)
+    
+    while (count<200)//运行到固定距离uwb_get_distance.Uwb_get_distance_run(0)<10000&&run_count ==0
+    {  
+     
+      mpu6050.Mpu6050_run(); //运行陀螺仪
 
-    while (uwb_get_distance.Uwb_get_distance_run(0)<10000&&run_count ==0)//运行到固定距离
-    {
-      Serial.print("distance:");
-      Serial.println(uwb_get_distance.Uwb_get_distance_run(0));
+      // Serial.print("distance:");
+      // Serial.println(uwb_get_distance.Uwb_get_distance_run(0));
       
-      if(mpu6050.mpu6050_gain_angle(0)==0){
-      car_control.Car_forward(5, 10); //前进
+      if(ypr[0] * 180/M_PI>-1 && ypr[0] * 180/M_PI<1){
+      car_control.Car_forward(50, acc_main_1); //前进
       }
-      if(mpu6050.mpu6050_gain_angle(0)>0){  
-      car_control.Car_right_rotation(PID_P*(mpu6050.mpu6050_gain_angle(0)), 10); //右转
 
+      if(ypr[0] * 180/M_PI>1){  
+     
+       car_control.Car_left_rotation(abs(PID_P*(ypr[0] * 180/M_PI)), acc_main); //左转
       }
-      if(mpu6050.mpu6050_gain_angle(0)<0){
-      car_control.Car_left_rotation(PID_P*(mpu6050.mpu6050_gain_angle(0)), 10); //左转
-      }
-      if(uwb_get_distance.Uwb_get_distance_run(0)==10000){
-       car_control.Car_stop(); //停止
-        run_count++;
-       }
-       delay(100);
 
+      if(ypr[0] * 180/M_PI<1){
+      car_control.Car_right_rotation(abs(PID_P*(ypr[0] * 180/M_PI)), acc_main); //右转
+      }  
+
+      Serial.print("distance:");
+      Serial.println(ypr[0] * 180/M_PI);
+
+      // if(uwb_get_distance.Uwb_get_distance_run(0)==10000){
+      //  car_control.Car_stop(); //停止
+      //   run_count++;
+      //  }
+
+      //  delay(100);
+        count++;
     }
+    car_control.Car_stop(); //停止
+    
     #endif
    
     while (1)
@@ -129,15 +153,7 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
  
 void Xothers(void *pvParameters) 
 {
-  // for (int i = 0; i < 3; i++)
-  // {
- 
-  //   Serial.println("Hello from task 2");
- 
-  //   delay(1000);
-  // }
- 
-  // Serial.println("Ending task 2");
+
 while (1){
 
 if (rain_sensor.Rain_sensor_is_rain() == true)
@@ -162,6 +178,6 @@ else
 
 void loop() {
 //测试用
-
+//  mpu6050.Mpu6050_run(); //运行陀螺仪
  
 }

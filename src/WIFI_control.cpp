@@ -24,7 +24,8 @@ char ssid[] = "asus";
 char pswd[] = "00000000";
 
 Car_control car_control;        // 小车控制类对象
-
+uint16_t SPEED = 10;             // 速度
+uint16_t ACC = 999;               // 加速度
 
 
 int counter = 0;        
@@ -39,7 +40,13 @@ BlinkerButton Button3("btn-stop");  //停止组件绑定（按键）
 BlinkerButton Button4("btn-toright"); //右平移组件绑定（按键）
 BlinkerButton Button5("btn-toleft");  //左平移组件绑定（按键）
 
+BlinkerButton Button6("btn-speedup"); //速度+组件绑定（按键）
+BlinkerButton Button7("btn-speeddown"); //速度-组件绑定（按键）
+
 BlinkerNumber Number1("num-abc");   // 还未用到
+
+BlinkerButton Button8("btn-left"); //左转组件绑定（按键）
+BlinkerButton Button9("btn-right"); //右转组件绑定（按键）
 
 
 // 如果未绑定的组件被触发，则会执行其中内容
@@ -55,7 +62,8 @@ void dataRead(const String & data)
 // 按下按键1即会执行该函数  前进
 void button1_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
-    car_control.Car_forward(5,10);digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+    car_control.Car_forward(SPEED,ACC);
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
 
 //       uint8_t cmd[16] = {0};
 
@@ -80,27 +88,64 @@ void button1_callback(const String & state) {
 // 按下按键2即会执行该函数  后退
 void button2_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
-    car_control.Car_back(5,10);digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+    car_control.Car_back(SPEED,ACC);
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
 }
 
 // 按下按键3即会执行该函数  停止
 void button3_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
-    car_control.Car_stop();digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+    car_control.Car_stop();
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+    uint16_t SPEED = 10; 
 }
 
 
 //按下按键4即会执行该函数  右平移
 void button4_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
-    car_control.Car_right_translation(5,10);digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+    car_control.Car_right_translation(SPEED,ACC);
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
 }
 
 //按下按键5即会执行该函数  左平移
 void button5_callback(const String & state) {
     BLINKER_LOG("get button state: ", state);
-    car_control.Car_left_translation(5,10);digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+    car_control.Car_left_translation(SPEED,ACC);
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
 }
+
+//按下按键6即会执行该函数  速度+
+void button6_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    SPEED += 10;
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键7即会执行该函数  速度-
+void button7_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    SPEED -= 10;
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键八，左转
+void button8_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    car_control.Car_left_rotation(SPEED,ACC);
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+//按下按键九，右转
+void button9_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    car_control.Car_right_rotation(SPEED,ACC);
+    // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));   //测试是否连接成功的指示灯
+}
+
+
+
+
 
 
 
@@ -113,8 +158,8 @@ void button5_callback(const String & state) {
 void WIFI_control :: WiFi_control_init(){
     
     // 初始化有LED的IO  用于测试是否连接成功
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, HIGH);
+    // pinMode(LED_BUILTIN, OUTPUT);
+    // digitalWrite(LED_BUILTIN, HIGH);
 
 
     car_control.Car_control_init();  // 初始化小车
@@ -140,6 +185,10 @@ void WIFI_control :: WiFi_control_init(){
     Button3.attach(button3_callback);
     Button4.attach(button4_callback);
     Button5.attach(button5_callback);
+    Button6.attach(button6_callback);
+    Button7.attach(button7_callback);
+    Button8.attach(button8_callback);
+    Button9.attach(button9_callback);
 }
 
 

@@ -45,6 +45,7 @@ public:
     void Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool snF); // 发送命令触发回零
     void Emm_V5_Origin_Interrupt(uint8_t addr); // 强制中断并退出回零
     void Emm_V5_Receive_Data(uint8_t *rxCmd, uint8_t *rxCount); // 返回数据接收函数
+    // void Emm_V5_Receive_Data(uint8_t dir)  //修改电机参数
     
 
   //速度控制命令
