@@ -6,6 +6,7 @@
  * 博客：https://blog.csdn.net/weixin_63211230
  * qq:3412363587
 */
+extern float ypr[3];
 
 // #define BLINKER_PRINT Serial
 #define BLINKER_WIFI
@@ -48,7 +49,7 @@ extern Rain_sensor rain_sensor; //声明在其他文件中定义的 rain_sensor 
 
 // 新建组件对象
 BlinkerNumber Number1("num-uwb");   // 还未用到
-
+BlinkerNumber Number2("num-angle");   // 还未用到
 
 
 
@@ -355,4 +356,5 @@ else{
 
 void WIFI_control :: Wifi_data_transmission(int range){
     Number1.print(range);
+    Number2.print(ypr[0] * 180/M_PI);
 }

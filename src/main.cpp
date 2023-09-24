@@ -217,6 +217,7 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
       wifi_control.WiFi_control_run();     // wifi控制小车运行
       // Serial.println(range[0]);
       strip.setBrightness(luminance); //设置亮度
+      mpu6050.Mpu6050_run(); //运行陀螺仪
     }
 
    vTaskDelete(NULL);  
