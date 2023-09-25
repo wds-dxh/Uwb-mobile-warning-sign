@@ -168,7 +168,7 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
       mpu6050.Mpu6050_run(); //运行陀螺仪
       uwb_get_distance.Uwb_get_distance_run(); //运行uwb测距模块
       wifi_control.Wifi_data_transmission(range[0]); //wifi数据传输
-      Serial.println(range[0]);
+      // Serial.println(range[0]);  //关闭打印，避免影响步进电机的运行
      
       // Number1.print(range[0]); //显示距离
       
@@ -195,8 +195,8 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
 
 
       wifi_control.WiFi_control_run();     // wifi控制小车运行
-      Serial.print("distance:");
-      Serial.println(ypr[0] * 180/M_PI);
+      // Serial.print("distance:");
+      // Serial.println(ypr[0] * 180/M_PI);   //关闭打印，避免影响步进电机的运行
 
     
 

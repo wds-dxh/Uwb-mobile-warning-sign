@@ -191,7 +191,7 @@ motor1.Emm_V5_Pos_Control(0, 0, vel, acc,clk, false, false);delay(DELAY_TIME);
 motor1.Emm_V5_Pos_Control(0, 0, vel, acc,clk, false, false);delay(DELAY_TIME);
 }
       
-if(clk>0){
+else{
 
 #if power_low
 motor1.Emm_V5_Pos_Control(0, 1, vel, acc,-clk, false, false);delay(DELAY_TIME);

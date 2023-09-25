@@ -24,6 +24,7 @@ extern int run_count; //运行到距离uwb固定位置
 #include "Rain_sensor.h"
 
 extern  Color_light_control color_light_control; //声明在其他文件中定义的 color_light_control 对象，避免重复定义
+extern motor motor1;
 int count_go;
 extern uint8_t led_quantity;
 
@@ -243,7 +244,18 @@ void slider1_callback(int32_t value)
 void slider2_callback(int32_t value)
 {
     BLINKER_LOG("get slider value: ", value);
-    car_control.Car_control_rotate(54*value,50, 0);
+
+
+    if (value>0)
+    {car_control.Car_control_rotate(abs(54*value),50, 1);}
+    
+    if(value<0)
+    {car_control.Car_control_rotate(-abs(54*value),50, 0);}
+    
+
+    if(value==0)
+    motor1.Emm_V5_Reset_CurPos_To_Zero(0);
+    
     
 }
 
@@ -300,6 +312,7 @@ void WIFI_control :: WiFi_control_init(){
     Button14.attach(button14_callback);//停止运动到uwb固定距离
 
     Slider1.attach(slider1_callback);//滑动条，调节灯光亮度
+    Slider2.attach(slider2_callback);//滑动条，调节小车角度
 }
 
 
