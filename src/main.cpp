@@ -18,7 +18,10 @@
 #include "Rain_sensor.h" //雨滴检测模块
 #include "Color_light_control.h" //灯光控制模块
 #include "Uwb_get_distance.h" //uwb测距模块
-#include"Adafruit_NeoPixel.h"
+#include"Adafruit_NeoPixel.h"  
+#include "Voice_prompt.h"  //语音提示模块
+
+uint8_t weather = 0; //天气  0默认不播报语音提示
 
 
 #include <soc/soc.h> 
@@ -29,6 +32,8 @@
 #define USE_MULTCORE  1 //使用多核心
 #define USW_MULTTHREAD 0 //使用多线程
 #define car_go true //小车运行的距离
+bool car_go_wifi = 0; //手机app控制是否开始运动,默认不运动
+//若car_go_wifi=1,则小车无需手机命令，自动运行到固定距离
 
 
 extern Adafruit_NeoPixel strip;
@@ -61,13 +66,14 @@ uint8_t led_quantity = 30;
 extern int range[4];
 
 
-void Xcontrol_wifi(void *parameter) ;
-void Xothers(void *parameter) ;
+void Xcontrol_wifi(void *parameter) ;     //wifi控制小车运行
+void Xothers(void *parameter) ;       //灯光
+// void X_voice_prompt(void *parameter) ; //语音提示
 
 int run_count = 0; //运行到距离uwb固定位置
 
 #define SPEED 50 //速度
-
+char mark_voice = 'A'; //语音提示
 
 void setup() {
 
@@ -76,6 +82,7 @@ void setup() {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);//关闭低电压检测,避免无限重启
     
     wifi_control.WiFi_control_init();  // 初始化WIFI
+    voice_prompt.Voice_prompt_init(); //初始化语音提示模块
 
     mpu6050.Mpu6050_eleccat_init(); //初始化陀螺仪
 
@@ -113,6 +120,7 @@ void setup() {
 
     xTaskCreatePinnedToCore(Xcontrol_wifi, "TaskOne", 15000, NULL, 2, NULL, 0);  //Xcontrol_wifi在 0核心
     xTaskCreatePinnedToCore(Xothers, "TaskTwo", 4096, NULL, 1, NULL, 1);  //Xothers在 1核心
+    
 #endif
 
 }
@@ -121,9 +129,19 @@ void setup() {
 void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的任务
  
 {
+
+  while(car_go_wifi==0)
+  {
+  wifi_control.WiFi_control_run();     // wifi控制小车运行
+  //控制变量car_go_wifi来控制小车是否运行到固定距离
+  }
+
+
+
+
   #if  (car_go)
     
-    while (range[0]<10000&&run_count ==0)//运行到固定距离count<100
+    while (range[0]<10000&&run_count ==0&&car_go_wifi==1)//运行到固定距离count<100
     {  
      /*
       mpu6050.Mpu6050_run(); //运行陀螺仪
@@ -165,9 +183,7 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
 
 
 
-      mpu6050.Mpu6050_run(); //运行陀螺仪
-      uwb_get_distance.Uwb_get_distance_run(); //运行uwb测距模块
-      wifi_control.Wifi_data_transmission(range[0]); //wifi数据传输
+      
       // Serial.println(range[0]);  //关闭打印，避免影响步进电机的运行
      
       // Number1.print(range[0]); //显示距离
@@ -195,6 +211,9 @@ void Xcontrol_wifi(void *pvParameters)//执行初始的运行到固定距离的�
 
 
       wifi_control.WiFi_control_run();     // wifi控制小车运行
+      mpu6050.Mpu6050_run(); //运行陀螺仪
+      uwb_get_distance.Uwb_get_distance_run(); //运行uwb测距模块
+      wifi_control.Wifi_data_transmission(range[0]); //wifi数据传输
       // Serial.print("distance:");
       // Serial.println(ypr[0] * 180/M_PI);   //关闭打印，避免影响步进电机的运行
 
@@ -233,21 +252,23 @@ while (1){
 if(mark_rain=='A'){
 
 if (rain_sensor.Rain_sensor_is_rain() == false){
-      voice_prompt.Vioce_prompt_run(1); //语音提示雨雪天气
+      // voice_prompt.Vioce_prompt_run(2); //语音提示雨雪天气
+      weather = 2;   //雨雪天气
       // color_light_control.color_flash(10,'B');  //闪烁红灯
-
+      voice_prompt.Vioce_prompt_run(weather);
       mark_led = 'R';
       }
 else{
-    voice_prompt.Vioce_prompt_run(2); //语音提示正常天气
+    // voice_prompt.Vioce_prompt_run(1); //语音提示正常天气
     //  color_light_control.color_flash(10,'R');  //闪烁红灯
-
+       weather= 1;  //正常天气
+       voice_prompt.Vioce_prompt_run(weather);
       mark_led = 'B';  //七彩灯
     }
-
+  
 }
 
-  if(mark_led=='R'||mark_led=='G'||mark_led=='B'){
+  if(mark_led=='R'||mark_led=='G'||mark_led=='B'){   //wifi控制灯光
         mark_rain = 'B';
         if (mark_led=='R')
         {
@@ -276,8 +297,35 @@ else{
 
 }
 
+
 void loop() {
 //测试用
 //  mpu6050.Mpu6050_run(); //运行陀螺仪
- 
+
+
+if(mark_voice=='A'){
+
+if(weather==4||weather==1||weather==2||weather==3){
+  
+
+      
+Serial.println("weather is:");
+      Serial.println(weather);
+
+      if(weather==4){
+      voice_prompt.Vioce_prompt_run(weather); //语音提示正常天气   //wifi控制语音播报
+      delay(50000);
+      }
+
+      else{
+      voice_prompt.Vioce_prompt_run(weather); //语音提示正常天气   //wifi控制语音播报
+      delay(6000);
+      }
+}
+
+
+}
+
+
+
 }

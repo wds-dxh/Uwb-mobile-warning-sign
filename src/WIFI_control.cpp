@@ -23,11 +23,14 @@ extern int run_count; //运行到距离uwb固定位置
 // #include "Blinker/BlinkerDebug.h"
 #include "Rain_sensor.h"
 
+
 extern  Color_light_control color_light_control; //声明在其他文件中定义的 color_light_control 对象，避免重复定义
 extern motor motor1;
 int count_go;
 extern uint8_t led_quantity;
+extern uint8_t car_go_wifi;
 
+extern uint8_t weather; //天气  0默认不播报语音提示
 
 char auth[] = "3f19661dfb92";
 // char ssid[] = "asus";
@@ -46,8 +49,9 @@ char mark_led = 'A';           // 标记灯光是否闪烁
 int32_t luminance =255;             // 灯光亮度
 int counter = 0;
 extern int count; 
-char mark_rain;      
+char mark_rain  = 'A';      
 extern Rain_sensor rain_sensor; //声明在其他文件中定义的 rain_sensor 对象，避免重复定义
+extern char mark_voice;
 
 // 新建组件对象
 BlinkerNumber Number1("num-uwb");   // uwb距离
@@ -81,11 +85,19 @@ BlinkerButton Button12("btn-blue"); //彩灯
 
 BlinkerButton Button13("btn-yushui"); //雨水检测组件绑定（按键）
 
-BlinkerButton Button14("btn-run"); 
+BlinkerButton Button14("btn-run");   //停止运动到固定距离
+BlinkerButton Button15("btn-star");   //开始运动到固定距离
+
+BlinkerButton Button16("btn-rain"); 
+BlinkerButton Button17("btn-accident"); 
+BlinkerButton Button18("btn-guoge"); 
+
+
+
 
 BlinkerSlider Slider1("luminance"); //滑动条组件绑定（滑动条）
 
-BlinkerSlider Slider2("angle"); //滑动条组件绑定（滑动条）
+// BlinkerSlider Slider2("angle"); //滑动条组件绑定（滑动条）
 
 
 
@@ -143,6 +155,7 @@ void button3_callback(const String & state) {
     uint16_t SPEED = 10; 
     color_light_control.colr_light_all_off(led_quantity);
     mark_led = 'A';  //停止灯光
+    mark_voice = 'B' ;
 }
 
 
@@ -227,6 +240,48 @@ void button14_callback(const String & state) {
 }
 
 
+//按下按键十五，小车开始行驶到固定距离
+void button15_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    car_go_wifi = true;
+}
+
+//按下按键十六，雨雪天气
+void button16_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    // voice_prompt.Vioce_prompt_run(2); //语音提示雨雪天气
+    weather = 2;   //雨雪天气
+    mark_led = 'R';
+    mark_voice = 'A';   
+}
+
+
+//按下按键十七，交通事故
+void button17_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    // voice_prompt.Vioce_prompt_run(3); //语音提示交通事故
+    weather = 3;   //交通事故
+    mark_led = 'R';
+    mark_voice = 'A';
+}
+
+//按下按键十八，国歌
+void button18_callback(const String & state) {
+    BLINKER_LOG("get button state: ", state);
+    weather = 4;   //国歌
+
+    mark_led = 'B';
+    mark_voice = 'A';
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -240,24 +295,24 @@ void slider1_callback(int32_t value)
 }
 
 
-//滑动滑动条，调节小车角度
-void slider2_callback(int32_t value)
-{
-    BLINKER_LOG("get slider value: ", value);
+// //滑动滑动条，调节小车角度
+// void slider2_callback(int32_t value)
+// {
+//     BLINKER_LOG("get slider value: ", value);
 
 
-    if (value>0)
-    {car_control.Car_control_rotate(abs(54*value),50, 1);}
+//     if (value>0)
+//     {car_control.Car_control_rotate(abs(54*value),50, 1);}
     
-    if(value<0)
-    {car_control.Car_control_rotate(-abs(54*value),50, 0);}
+//     if(value<0)
+//     {car_control.Car_control_rotate(-abs(54*value),50, 0);}
     
 
-    if(value==0)
-    motor1.Emm_V5_Reset_CurPos_To_Zero(0);
+//     if(value==0)
+//     motor1.Emm_V5_Reset_CurPos_To_Zero(0);
     
     
-}
+// }
 
 
 
@@ -310,9 +365,14 @@ void WIFI_control :: WiFi_control_init(){
     Button12.attach(button12_callback);//彩灯闪烁
     Button13.attach(button13_callback);//雨水控制
     Button14.attach(button14_callback);//停止运动到uwb固定距离
+    Button15.attach(button15_callback);
+
+    Button16.attach(button16_callback);//雨雪天气
+    Button17.attach(button17_callback);//交通事故
+    Button18.attach(button18_callback);//国歌
 
     Slider1.attach(slider1_callback);//滑动条，调节灯光亮度
-    Slider2.attach(slider2_callback);//滑动条，调节小车角度
+    // Slider2.attach(slider2_callback);//滑动条，调节小车角度
 }
 
 
