@@ -1,5 +1,5 @@
 /**
- * @file ws2812b控制程序
+ * @file 主程序
  * @author wds
  * @date 2023/9/14
  * 邮箱：wdsnpshy@163.com
