@@ -8,9 +8,9 @@ Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN�
 #### 软件架构
 软件架构说明
 
-![image-20231008214831866](C:\Users\wds\AppData\Roaming\Typora\typora-user-images\image-20231008214831866.png)
+![哈哈哈](readme/系统架构.png)
 
-![系统架构](D:\github\item\Uwb mobile warning sign\Uwb mobile warning sign\readme\系统架构.png)
+![系统架构](readme/电机驱动.png)
 
 #### 安装教程
 
