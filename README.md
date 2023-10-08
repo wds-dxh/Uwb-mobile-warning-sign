@@ -26,5 +26,4 @@ xxxxxx
 1.  xxxxxx
 
 #### 演示视频
-
-<video src="【Uwb mobile warning sign】 https://www.bilibili.com/video/BV1vC4y1d7iW/?share_source=copy_web&vd_source=59d27872ea6a7ea7390ac0fae3dc29bd"></video>
+[观看视频](https://www.bilibili.com/video/BV1vC4y1d7iW/?share_source=copy_webvd_source=59d27872ea6a7ea7390ac0fae3dc29bd)
