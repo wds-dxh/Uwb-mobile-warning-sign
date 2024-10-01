@@ -1,3 +1,12 @@
+/**
+ * @file 陀螺仪驱动
+ * @author wds
+ * @date 2023/9/16
+ * 邮箱：wdsnpshy@163.com
+ * 博客：https://blog.csdn.net/weixin_63211230
+ * qq:3412363587
+*/
+
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #include "Mpu6050_eleccat.h"
@@ -150,7 +159,7 @@ float Mpu6050_eleccat :: Mpu6050_eleccat_getYaw(uint8_t angle){
         switch (angle)
         {
         case 0:
-            return ypr[0] * 180/M_PI;
+            return ypr[0] * 180/M_PI;//返回偏航角
             break;
         case 1:
             return ypr[1] * 180/M_PI;

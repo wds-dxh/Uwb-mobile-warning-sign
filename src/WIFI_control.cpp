@@ -277,15 +277,6 @@ void button18_callback(const String & state) {
 
 
 
-
-
-
-
-
-
-
-
-
 //滑动滑动条，调节灯光亮度
 void slider1_callback(int32_t value)
 {
